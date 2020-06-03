@@ -92,6 +92,32 @@ package(
 [
     iree_py_test(
         name = "_".join([
+            "keras_vision_model_temp"
+        ]),
+        size = "large",
+        srcs = [
+            "keras_vision_model_test.py",
+        ],
+        args = [
+            "--model=ResNet50",
+            "--override_backends=tf,iree_vulkan",
+            "--data=cifar10",
+            "--include_top=1",
+        ],
+        main = "keras_vision_model_test.py",
+        python_version = "PY3",
+        tags = [
+            "manual",
+        ],
+        deps = INTREE_TENSORFLOW_PY_DEPS + NUMPY_DEPS + [
+            "//integrations/tensorflow/bindings/python/pyiree/tf/support",
+        ],
+    )
+]
+
+[
+    iree_py_test(
+        name = "_".join([
             "keras_vision_model",
             data,
             "top",
