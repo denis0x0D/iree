@@ -49,8 +49,26 @@ iree::StatusOr<std::string> linkLLVMAOTObjects(
   outputFile->os() << objData;
   outputFile->os().flush();
 
+  std::string otherOptions =
+      " -L/home/denis/ANDROID_SDK/ndk/21.3.6528147/toolchains/llvm/prebuilt/"
+      "linux-x86_64/sysroot/usr/lib/aarch64-linux-android/29/ ";
+
+  std::string otherOptions2 =
+      " -L/home/denis/ANDROID_SDK/ndk/21.3.6528147/toolchains/llvm/prebuilt/"
+      "linux-x86_64/sysroot/usr/lib/aarch64-linux-android/ ";
+
+  std::string otherOptions3 =
+      " -L/home/denis/ANDROID_SDK/ndk/21.3.6528147/toolchains/llvm/prebuilt/"
+      "linux-x86_64/lib/gcc/aarch64-linux-android/"
+      "4.9.x/";
+
+  //  std::string OptionMem =
+  //     " /home/denis/iree-android-demo/third_party/iree/memset.o ";
+
   auto linkingCmd =
-      (linkerToolPath + " -shared " + objFilePath + " -o " + dylibFilePath)
+      (linkerToolPath + " -shared " + objFilePath + " -o " + dylibFilePath +
+       otherOptions + otherOptions2 + otherOptions3 +
+       "  -Bstatic -lc++ -Bdynamic -lm -lgcc -lc -lgcc ")
           .str();
   int systemRet = system(linkingCmd.c_str());
   if (systemRet != 0) {
